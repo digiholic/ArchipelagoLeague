@@ -1,0 +1,88 @@
+#item.item-filler {
+    color: gray;
+}
+
+#item.item-useful {
+    color: lightblue;
+}
+
+#item.item-progression {
+    color: blueviolet;
+}
+
+#item.item-trap {
+    color: red;
+}
+
+#message.apclient-message.left {
+    background-color: gray;
+    border: 1px 1px 1px 0px black;
+    margin: 2px 2px 2px 0px;
+    padding: 8px 8px 8px 0px;
+    box-shadow: 2px 2px 5px black;
+    border-radius: 0px 4px 4px 0px;
+    animation: slideInLeft 0.25s ease-out forwards;
+    background-image: linear-gradient(to right, blue, lightgray, lightgray);
+    text-align: left;
+}
+
+#message.apclient-message.right {
+    background-color: darkgray;
+    border: 1px 0px 1px 1px black;
+    margin: 2px 0px 2px 2px;
+    padding: 8px 0px 8px 8px;
+    box-shadow: 2px 2px 5px black;
+    border-radius: 4px 0px 0px 4px;
+    animation: slideInRight 0.25s ease-out forwards;
+    background-image: linear-gradient(to left, red, lightgray, lightgray);
+    text-align: right;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+#text-client {
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+#client-area {
+    overflow: hidden;
+    display: inline-block;
+    width: 70%;
+    height: 500px;
+    background-color: darkgray;
+}
+
+#left-team-banner {
+    display: inline-block;
+    width: 14%;
+    height: 500px;
+    background-color: blue;
+}
+
+#right-team-banner {
+    display: inline-block;
+    width: 14%;
+    height: 500px;
+    background-color: red;
+}
