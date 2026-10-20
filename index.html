@@ -5,21 +5,39 @@
 </header>
 
 <body>
-    <div style="display: flex; flex-direction: row; width: 60%">
-        <div id="left-team-banner">
-            <input type="text" id="left-server-address">
-            <input type="text" id="left-server-slot">
-            <button id="left-connect-button">Connect</button>
+    <div id="multi-tracker">
+        <div id="left-team-banner" class="hex-bg">
+            <div id="left-connections">
+                <input type="text" id="left-server-address">
+                <input type="text" id="left-server-slot">
+                <button id="left-connect-button">Connect</button>
+            </div>
+            <div id="left-slots" style="display:none">
+
+            </div>
         </div>
         <div id="client-area">
             <div id="text-client">
                 <!-- Message rows go here -->
+                <!-- Sample lines
+                <div id="message-wrapper" class="apclient-message-wrapper left">
+                    <div id="message" class="apclient-message left">Test Text</div>
+                </div>
+                <div id="message-wrapper" class="apclient-message-wrapper right">
+                    <div id="message" class="apclient-message right">Test Text 2</div>
+                </div>
+                -->
             </div>
         </div>
-        <div id="right-team-banner">
-            <input type="text" id="right-server-address">
-            <input type="text" id="right-server-slot">
-            <button id="right-connect-button">Connect</button>
+        <div id="right-team-banner" class="hex-bg">
+            <div id="right-connections">
+                <input type="text" id="right-server-address">
+                <input type="text" id="right-server-slot">
+                <button id="right-connect-button">Connect</button>
+            </div>
+            <div id="right-slots" style="display:none">
+
+            </div>
         </div>
     </div>
 </body>

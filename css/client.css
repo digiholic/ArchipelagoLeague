@@ -1,9 +1,19 @@
+body {
+    font-family: "Helvetica", Sans-Serif;
+}
+
+#multi-tracker {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+}
+
 #item.item-filler {
     color: gray;
 }
 
 #item.item-useful {
-    color: lightblue;
+    color: cyan;
 }
 
 #item.item-progression {
@@ -14,27 +24,61 @@
     color: red;
 }
 
-#message.apclient-message.left {
-    background-color: gray;
-    border: 1px 1px 1px 0px black;
-    margin: 2px 2px 2px 0px;
-    padding: 8px 8px 8px 0px;
-    box-shadow: 2px 2px 5px black;
-    border-radius: 0px 4px 4px 0px;
+.apclient-message-wrapper {
+    box-shadow: 3px 3px 5px black;
+    margin: 3px 0px 3px 0px;
+}
+
+.apclient-message-wrapper.left {
     animation: slideInLeft 0.25s ease-out forwards;
-    background-image: linear-gradient(to right, blue, lightgray, lightgray);
+    /* Using a custom rgb value instead of just blue because we want to match the hexagons which have been color multiplied, not the spaces between them that are full brightness */
+    background-image: linear-gradient(to right, rgb(0, 0, 217), lightgray, lightgray);
+    margin-right: 3px;
+}
+
+.apclient-message-wrapper.right {
+    animation: slideInRight 0.25s ease-out forwards;
+    /* Using a custom rgb value instead of just blue because we want to match the hexagons which have been color multiplied, not the spaces between them that are full brightness */
+    background-image: linear-gradient(to left, rgb(217, 0, 0), lightgray, lightgray);
+    margin-left: 3px;
+}
+
+.apclient-message-wrapper.item-filler {
+    font-size: smaller;
+}
+
+.apclient-message-wrapper.item-useful {
+    font-size: small;
+}
+
+.apclient-message-wrapper.item-filler.left {
+    margin-right: 66%;
+}
+
+.apclient-message-wrapper.item-useful.left {
+    margin-right: 33%;
+}
+
+.apclient-message-wrapper.item-filler.right {
+    margin-left: 66%;
+}
+
+.apclient-message-wrapper.item-useful.right {
+    margin-left: 33%;
+}
+
+.apclient-message {
+    background-color: lightgray;
+    margin: 5px;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+.apclient-message.left {
     text-align: left;
 }
 
-#message.apclient-message.right {
-    background-color: darkgray;
-    border: 1px 0px 1px 1px black;
-    margin: 2px 0px 2px 2px;
-    padding: 8px 0px 8px 8px;
-    box-shadow: 2px 2px 5px black;
-    border-radius: 4px 0px 0px 4px;
-    animation: slideInRight 0.25s ease-out forwards;
-    background-image: linear-gradient(to left, red, lightgray, lightgray);
+.apclient-message.right {
     text-align: right;
 }
 
@@ -63,6 +107,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
+    box-shadow: 3px 3px 5px inset;
 }
 
 #client-area {
@@ -85,4 +130,46 @@
     width: 14%;
     height: 500px;
     background-color: red;
+}
+
+.slot-info {
+    background: gray;
+    border: 1px solid black;
+    box-shadow: 2px 2px 3px;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
+.progress-bar {
+    margin: 10px;
+    background-color: white;
+    width: 80%;
+    height: 20;
+    border: 3px solid black;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background-color: lightgreen;
+    height: 100%;
+    box-shadow: inset 2px 2px 2px green;
+    border-radius: 20px;
+}
+
+.hex-bg {
+    background-image: url("../resources/images/HexagonsFill_Niki.png");
+    background-repeat: repeat;
+    background-blend-mode: multiply;
+    animation: scrollBG 20s linear infinite;
+}
+
+@keyframes scrollBG {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -821px -706px;
+    }
 }
