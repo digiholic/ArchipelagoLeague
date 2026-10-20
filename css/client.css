@@ -5,7 +5,18 @@ body {
 #multi-tracker {
     display: flex;
     flex-direction: row;
-    width: 60%;
+    width: 100%;
+}
+
+.connection-panel {
+    margin: 5px;
+    padding: 2px;
+    background-color: gray;
+}
+
+.connection-panel>input {
+    box-sizing: border-box;
+    width: 90%;
 }
 
 #item.item-filler {
@@ -172,4 +183,28 @@ body {
     to {
         background-position: -821px -706px;
     }
+}
+
+.slot-name {
+    margin: 0px;
+}
+
+.slot-game {
+    margin: 0px;
+    font-size: small;
+    font-style: italic;
+}
+
+.team-header {
+    text-align: center;
+    font-weight: bold;
+    font-family: "Stencil Std";
+}
+
+.team-header.left {
+    text-shadow: 5px 5px 5px blue;
+}
+
+.team-header.right {
+    text-shadow: 5px 5px 5px red;
 }

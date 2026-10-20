@@ -5,7 +5,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 
-const connect = function(client, address, slot, password) {
+const connect = function(client, address, slot, password, parentDOM) {
     if (address == null || address == "") return;
     if (slot == null || slot == "") return;
 
@@ -13,29 +13,33 @@ const connect = function(client, address, slot, password) {
     if (password != null && password != "")
         connectionOptions.password = password;
 
+    console.log("Connecting to [" + address + "] as [" + slot + "]");
     client.login(address, slot, undefined, connectionOptions)
-        .then(() => populatePlayers(client))
+        .then(() => {
+            console.log("Connected to the Archipelago server!");
+            populatePlayers(client, parentDOM);
+        })
         .catch(console.error);
 }
 
-const populatePlayers = function(client) {
+const populatePlayers = function(client, parentDOM) {
     console.log(client.players.slots);
     for (var n in client.players.slots) {
         var slot = client.players.slots[n];
         var slotElement = $("<div>", {
             class: "slot-info"
         });
-        var nameElement = $("<p>");
-        nameElement.append(slot.name);
-        slotElement.append(nameElement);
-        /*
+        $("<p>").addClass("slot-name").append(slot.name).appendTo(slotElement);
+        $("<p>").addClass("slot-game").append(slot.game).appendTo(slotElement);
+
+
+
         var progressBar = new ProgressBar(1, "Player1", 100, "green");
         console.log(progressBar);
         slotElement.append(progressBar.buildDOMElement());
         progressBar.updateValue(50, false);
-        */
 
-        $("#left-slots").append(slotElement);
+        parentDOM.append(slotElement);
     }
 }
 
@@ -170,27 +174,71 @@ right_client.socket.on("disconnected", function() {
 $("#left-connect-button").on("click", function() {
     var path = $("#left-server-address").val();
     var slot = $("#left-server-slot").val();
+    var passwd = $("#left-server-passwd").val();
 
-    connect(left_client, path, slot, null);
+    connect(left_client, path, slot, passwd, $("#left-slots"));
 });
 
 $("#right-connect-button").on("click", function() {
     var path = $("#right-server-address").val();
     var slot = $("#right-server-slot").val();
-    connect(right_client, path, slot, null);
+    var passwd = $("#right-server-passwd").val();
+
+    connect(right_client, path, slot, passwd, $("#right-slots"));
+});
+
+$("#copy-url").on("click", function() {
+    var data = {
+        autoconnect: "false",
+
+        nameA: $("#left-team-name").val(),
+        serverA: $("#left-server-address").val(),
+        slotA: $("#left-server-slot").val(),
+        passwdA: $("#left-server-passwd").val(),
+
+        nameB: $("#right-team-name").val(),
+        serverB: $("#right-server-address").val(),
+        slotB: $("#right-server-slot").val(),
+        passwdB: $("#right-server-passwd").val(),
+    };
+
+    var queryStr = new URLSearchParams(data).toString();
+    //var querylessUrl = window.location.href.split('?')[0];
+    var querylessUrl = location.protocol + "//" + location.host + location.pathname;
+    console.log(querylessUrl.toString() + "?" + queryStr);
+    navigator.clipboard.writeText(querylessUrl + "?" + queryStr);
 });
 
 const init = function() {
+    var nameA = urlParams.get("nameA");
     var serverA = urlParams.get("serverA");
     var slotA = urlParams.get("slotA");
     var passwdA = urlParams.get("passwdA");
 
+    var nameB = urlParams.get("nameB");
     var serverB = urlParams.get("serverB");
     var slotB = urlParams.get("slotB");
     var passwdB = urlParams.get("passwdB");
 
-    connect(left_client, serverA, slotA, passwdA);
-    connect(right_client, serverB, slotB, passwdB);
+    $("#left-server-address").val(serverA);
+    $("#left-server-slot").val(slotA);
+    $("#left-server-passwd").val(passwdA);
+
+    $("#right-server-address").val(serverB);
+    $("#right-server-slot").val(slotB);
+    $("#right-server-passwd").val(passwdB);
+
+    $("#left-team-name").val(nameA);
+    $("#team-header-left").text(nameA);
+    $("#right-team-name").val(nameB);
+    $("#team-header-right").text(nameB);
+
+    if (urlParams.get("autoconnect") == "true") {
+        connect(left_client, serverA, slotA, passwdA, $("#left-slots"));
+        setTimeout(() => connect(right_client, serverB, slotB, passwdB, $("#right-slots")), 100);
+
+        $("footer").hide();
+    }
 }
 
 init();

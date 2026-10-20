@@ -7,37 +7,54 @@
 <body>
     <div id="multi-tracker">
         <div id="left-team-banner" class="hex-bg">
-            <div id="left-connections">
+            <div id="left-connections" class="connection-panel">
+                <label for="left-server-address">Address:</label>
                 <input type="text" id="left-server-address">
+                <label for="left-server-slot">Slot:</label>
                 <input type="text" id="left-server-slot">
+                <label for="left-server-passwd">Password (Blank if none):</label>
+                <input type="password" id="left-server-passwd">
                 <button id="left-connect-button">Connect</button>
             </div>
             <div id="left-slots" style="display:none">
-
+                <div class="team-header left">
+                    <h1 id="team-header-left">Blue Team</h1>
+                </div>
             </div>
         </div>
         <div id="client-area">
-            <div id="text-client">
-                <!-- Message rows go here -->
-                <!-- Sample lines
-                <div id="message-wrapper" class="apclient-message-wrapper left">
-                    <div id="message" class="apclient-message left">Test Text</div>
-                </div>
-                <div id="message-wrapper" class="apclient-message-wrapper right">
-                    <div id="message" class="apclient-message right">Test Text 2</div>
-                </div>
-                -->
-            </div>
+            <div id="text-client"></div>
         </div>
         <div id="right-team-banner" class="hex-bg">
-            <div id="right-connections">
+            <div id="right-connections" class="connection-panel">
+                <label for="right-server-address">Address:</label>
                 <input type="text" id="right-server-address">
+                <label for="right-server-slot">Slot:</label>
                 <input type="text" id="right-server-slot">
+                <label for="right-server-passwd">Password (Blank if none):</label>
+                <input type="password" id="right-server-passwd">
                 <button id="right-connect-button">Connect</button>
             </div>
             <div id="right-slots" style="display:none">
-
+                <div class="team-header right">
+                    <h1 id="team-header-right">Red Team</h1>
+                </div>
             </div>
         </div>
     </div>
 </body>
+<footer>
+    <div>
+        <label for="left-team-name">Left Team Name:</label>
+        <input type="text" id="left-team-name">
+        <label for="left-tracker-url">Left Team Tracker URL:</label>
+        <input type="text" id="left-tracker-url">
+    </div>
+    <div>
+        <label for="right-team-name">Right Team Name:</label>
+        <input type="text" id="right-team-name">
+        <label for="right-tracker-url">Right Team Tracker URL:</label>
+        <input type="text" id="right-tracker-url">
+    </div>
+    <button id="copy-url">Copy Browser Source URL</button>
+</footer>
