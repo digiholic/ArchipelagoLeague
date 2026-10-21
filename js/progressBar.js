@@ -1,10 +1,7 @@
 export class ProgressBar {
-    constructor(playerIndex, name, max, color) {
+    constructor(playerIndex, name) {
         this.playerIndex = playerIndex;
         this.name = name;
-        this.currentValue = 0;
-        this.maxValue = max;
-        this.color = color;
     }
 
     buildDOMElement() {
@@ -14,15 +11,21 @@ export class ProgressBar {
         this.fillElement = $("<div>", {
             class: "progress-bar-fill"
         });
+        this.labelElement = $("<div>", {
+            class: "progress-bar-label"
+        });
 
         this.barElement.append(this.fillElement);
+        this.barElement.append(this.labelElement);
+
         return this.barElement;
     }
 
-    updateValue(newVal, relative) {
-        if (relative) this.currentValue += newVal;
-        else this.currentValue = newVal;
+    updateValue(newVal, newTotal) {
+        this.currentValue = newVal;
+        this.maxValue = newTotal;
 
+        this.labelElement.empty().append(newVal + "/" + newTotal);
         var percent = this.currentValue / this.maxValue;
         this.fillElement.width((percent * 100) + "%");
     }

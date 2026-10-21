@@ -4,8 +4,7 @@ import { ProgressBar } from "./js/progressBar.js"
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-
-const connect = function(client, address, slot, password, parentDOM) {
+const connect = function(client, address, slot, password, side) {
     if (address == null || address == "") return;
     if (slot == null || slot == "") return;
 
@@ -17,13 +16,16 @@ const connect = function(client, address, slot, password, parentDOM) {
     client.login(address, slot, undefined, connectionOptions)
         .then(() => {
             console.log("Connected to the Archipelago server!");
-            populatePlayers(client, parentDOM);
+            populatePlayers(client, side);
         })
         .catch(console.error);
 }
 
-const populatePlayers = function(client, parentDOM) {
-    console.log(client.players.slots);
+const progressBars = {};
+
+const populatePlayers = function(client, side) {
+    if (progressBars[side] == null) progressBars[side] = {};
+
     for (var n in client.players.slots) {
         var slot = client.players.slots[n];
         var slotElement = $("<div>", {
@@ -32,14 +34,22 @@ const populatePlayers = function(client, parentDOM) {
         $("<p>").addClass("slot-name").append(slot.name).appendTo(slotElement);
         $("<p>").addClass("slot-game").append(slot.game).appendTo(slotElement);
 
-
-
-        var progressBar = new ProgressBar(1, "Player1", 100, "green");
-        console.log(progressBar);
+        var progressBar = new ProgressBar(n, slot.name);
         slotElement.append(progressBar.buildDOMElement());
-        progressBar.updateValue(50, false);
+        progressBars[side][n] = progressBar;
+        syncProgression(side, n);
 
-        parentDOM.append(slotElement);
+        $("#" + side + "-slots").append(slotElement);
+    }
+    console.log(progressBars);
+}
+
+const syncProgression = function(side, player_id) {
+    if (checkCounts[side] != null && checkCounts[side][player_id] != null) {
+        var items_collected = checkCounts[side][player_id]["done"];
+        var items_total = checkCounts[side][player_id]["total"];
+        var progressBar = progressBars[side][player_id];
+        progressBar.updateValue(items_collected, items_total);
     }
 }
 
@@ -83,6 +93,8 @@ const teamClientMessage = function(teamClass) {
                         class: "item-" + classification
                     }).appendTo(messageElement);
                     itemNode.append(node.toString());
+                    checkCounts[teamClass][node.part.player]["done"] = checkCounts[teamClass][node.part.player]["done"] + 1;
+                    syncProgression(teamClass, node.part.player);
                     break;
                 case "location":
                     var locationNode = $('<span>', {
@@ -114,7 +126,9 @@ const teamClientMessage = function(teamClass) {
                     break;
             }
         });
-        enqueueFunction(() => $("#text-client").append(messageWrapper));
+        enqueueFunction(() => {
+            $("#text-client").append(messageWrapper);
+        });
     }
 };
 
@@ -143,7 +157,6 @@ const executeNextFunction = function() {
 }
 
 const left_client = new Client();
-window.left_client = left_client;
 const right_client = new Client();
 
 left_client.messages.on("itemSent", teamClientMessage("left"));
@@ -162,13 +175,13 @@ right_client.socket.on("connected", function() {
 left_client.socket.on("disconnected", function() {
     $("#left-connections").show();
     $("#left-slots").hide();
-    $("left-slots").replaceChildren();
+    $("left-slots").empty();
 });
 
 right_client.socket.on("disconnected", function() {
     $("#right-connections").show();
     $("#right-slots").hide();
-    $("#right-slots").replaceChildren();
+    $("#right-slots").empty();
 });
 
 $("#left-connect-button").on("click", function() {
@@ -176,7 +189,8 @@ $("#left-connect-button").on("click", function() {
     var slot = $("#left-server-slot").val();
     var passwd = $("#left-server-passwd").val();
 
-    connect(left_client, path, slot, passwd, $("#left-slots"));
+    connect(left_client, path, slot, passwd, "left");
+    trackerApi($("#left-tracker-url").val(), "left");
 });
 
 $("#right-connect-button").on("click", function() {
@@ -184,7 +198,8 @@ $("#right-connect-button").on("click", function() {
     var slot = $("#right-server-slot").val();
     var passwd = $("#right-server-passwd").val();
 
-    connect(right_client, path, slot, passwd, $("#right-slots"));
+    connect(right_client, path, slot, passwd, "right");
+    trackerApi($("#right-tracker-url").val(), "right");
 });
 
 $("#copy-url").on("click", function() {
@@ -195,49 +210,155 @@ $("#copy-url").on("click", function() {
         serverA: $("#left-server-address").val(),
         slotA: $("#left-server-slot").val(),
         passwdA: $("#left-server-passwd").val(),
+        trackerA: $("#left-tracker-url").val(),
+
+        player1A: $("left-player-1-name").val(),
+        player2A: $("left-player-2-name").val(),
+        player3A: $("left-player-3-name").val(),
+
+        stream1A: $("left-player-1-stream").val(),
+        stream2A: $("left-player-2-stream").val(),
+        stream3A: $("left-player-3-stream").val(),
 
         nameB: $("#right-team-name").val(),
         serverB: $("#right-server-address").val(),
         slotB: $("#right-server-slot").val(),
         passwdB: $("#right-server-passwd").val(),
+        trackerB: $("#right-tracker-url").val(),
+
+        player1B: $("right-player-1-name").val(),
+        player2B: $("right-player-2-name").val(),
+        player3B: $("right-player-3-name").val(),
+
+        stream1B: $("right-player-1-stream").val(),
+        stream2B: $("right-player-2-stream").val(),
+        stream3B: $("right-player-3-stream").val(),
     };
 
     var queryStr = new URLSearchParams(data).toString();
-    //var querylessUrl = window.location.href.split('?')[0];
     var querylessUrl = location.protocol + "//" + location.host + location.pathname;
-    console.log(querylessUrl.toString() + "?" + queryStr);
+    //console.log(querylessUrl.toString() + "?" + queryStr);
     navigator.clipboard.writeText(querylessUrl + "?" + queryStr);
 });
+
+const checkCounts = {}
+
+const trackerApi = async function(trackerUrl, side) {
+    if (checkCounts[side] == null) checkCounts[side] = {};
+
+    var trackerApiUrl = trackerUrl.replace("/tracker", "/api/tracker");
+    const trackerResponse = await fetch(trackerApiUrl);
+    const trackerResultJson = await trackerResponse.json();
+
+    var staticTrackerApiUrl = trackerApiUrl.replace("/tracker", "/static_tracker");
+    const staticTrackerResponse = await fetch(staticTrackerApiUrl);
+    const staticTrackerResultJson = await staticTrackerResponse.json();
+
+    for (var key in trackerResultJson.player_checks_done) {
+        var player_id = trackerResultJson.player_checks_done[key].player;
+        var checks_done = trackerResultJson.player_checks_done[key].locations.length;
+        var checks_total = staticTrackerResultJson.player_locations_total[key].total_locations;
+        checkCounts[side][player_id] = {
+            done: checks_done,
+            total: checks_total
+        };
+
+        if (progressBars[side] != null && progressBars[side][player_id] != null) {
+            console.log(progressBars[side][player_id]);
+            progressBars[side][player_id].updateValue(checks_done, checks_total);
+        }
+    }
+}
+
+const getStreamEmbedDOMelement = function(channel) {
+    return $("<iframe>", {
+        src: "https://player.twitch.tv/" + channel + "&parent=digiholic.github.io",
+        height: 266.6,
+        width: 472.4
+    });
+}
 
 const init = function() {
     var nameA = urlParams.get("nameA");
     var serverA = urlParams.get("serverA");
     var slotA = urlParams.get("slotA");
-    var passwdA = urlParams.get("passwdA");
-
-    var nameB = urlParams.get("nameB");
-    var serverB = urlParams.get("serverB");
-    var slotB = urlParams.get("slotB");
-    var passwdB = urlParams.get("passwdB");
 
     $("#left-server-address").val(serverA);
     $("#left-server-slot").val(slotA);
     $("#left-server-passwd").val(passwdA);
 
+    var passwdA = urlParams.get("passwdA");
+    var trackerA = urlParams.get("trackerA")
+
+    $("#left-team-name").val(nameA);
+    $("#team-header-left").text(nameA);
+    $("#left-tracker-url").val(trackerA);
+
+    var player1A = urlParams.get("player1A");
+    var player2A = urlParams.get("player2A");
+    var player3A = urlParams.get("player3A");
+
+    $("left-player-1-name").val(player1A);
+    $("left-player-2-name").val(player2A);
+    $("left-player-3-name").val(player3A);
+
+    var stream1A = urlParams.get("stream1A");
+    var stream2A = urlParams.get("stream2A");
+    var stream3A = urlParams.get("stream3A");
+
+    $("left-player-1-stream").val(stream1A);
+    $("left-player-2-stream").val(stream2A);
+    $("left-player-3-stream").val(stream3A);
+
+    var nameB = urlParams.get("nameB");
+    var serverB = urlParams.get("serverB");
+    var slotB = urlParams.get("slotB");
+
     $("#right-server-address").val(serverB);
     $("#right-server-slot").val(slotB);
     $("#right-server-passwd").val(passwdB);
 
-    $("#left-team-name").val(nameA);
-    $("#team-header-left").text(nameA);
+    var passwdB = urlParams.get("passwdB");
+    var trackerB = urlParams.get("trackerB");
+
     $("#right-team-name").val(nameB);
     $("#team-header-right").text(nameB);
+    $("#right-tracker-url").val(trackerB);
+
+    var player1B = urlParams.get("player1B");
+    var player2B = urlParams.get("player2B");
+    var player3B = urlParams.get("player3B");
+
+    $("right-player-1-name").val(player1B);
+    $("right-player-2-name").val(player2B);
+    $("right-player-3-name").val(player3B);
+
+    var stream1B = urlParams.get("stream1B");
+    var stream2B = urlParams.get("stream2B");
+    var stream3B = urlParams.get("stream3B");
+
+    $("right-player-1-stream").val(stream1B);
+    $("right-player-2-stream").val(stream2B);
+    $("right-player-3-stream").val(stream3B);
 
     if (urlParams.get("autoconnect") == "true") {
-        connect(left_client, serverA, slotA, passwdA, $("#left-slots"));
-        setTimeout(() => connect(right_client, serverB, slotB, passwdB, $("#right-slots")), 100);
+        connect(left_client, serverA, slotA, passwdA, "left");
+        setTimeout(() => connect(right_client, serverB, slotB, passwdB, "right"), 100);
+
+        trackerApi($("#left-tracker-url").val(), "left");
+        trackerApi($("#right-tracker-url").val(), "right");
 
         $("footer").hide();
+    }
+
+    if (stream1A != null && stream1A != "") {
+        $("left-stream-1").append(getStreamEmbedDOMelement(stream1A));
+        $("left-stream-2").append(getStreamEmbedDOMelement(stream2A));
+        $("left-stream-3").append(getStreamEmbedDOMelement(stream3A));
+
+        $("left-stream-1").append(getStreamEmbedDOMelement(stream1B));
+        $("left-stream-2").append(getStreamEmbedDOMelement(stream2B));
+        $("left-stream-3").append(getStreamEmbedDOMelement(stream3B));
     }
 }
 

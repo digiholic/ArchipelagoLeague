@@ -1,11 +1,14 @@
 body {
     font-family: "Helvetica", Sans-Serif;
+    width: 1920px;
+    height: 1080px;
 }
 
 #multi-tracker {
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: 33%;
 }
 
 .connection-panel {
@@ -125,21 +128,21 @@ body {
     overflow: hidden;
     display: inline-block;
     width: 70%;
-    height: 500px;
-    background-color: darkgray;
+    height: 100%;
+    background-color: rgba(169, 169, 169, 255);
 }
 
 #left-team-banner {
     display: inline-block;
-    width: 14%;
-    height: 500px;
+    width: 15%;
+    height: 100%;
     background-color: blue;
 }
 
 #right-team-banner {
     display: inline-block;
-    width: 14%;
-    height: 500px;
+    width: 15%;
+    height: 100%;
     background-color: red;
 }
 
@@ -160,6 +163,7 @@ body {
     border: 3px solid black;
     border-radius: 20px;
     overflow: hidden;
+    position: relative;
 }
 
 .progress-bar-fill {
@@ -167,6 +171,15 @@ body {
     height: 100%;
     box-shadow: inset 2px 2px 2px green;
     border-radius: 20px;
+    position: absolute;
+}
+
+.progress-bar-label {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 2px;
 }
 
 .hex-bg {
@@ -207,4 +220,81 @@ body {
 
 .team-header.right {
     text-shadow: 5px 5px 5px red;
+}
+
+#stream-viewer {
+    height: 67%;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    border: 2px solid black;
+}
+
+.streams {
+    aspect-ratio: 16 / 9;
+    width: 49%;
+    box-shadow: 3px 3px 5px inset;
+    background-color: lightcyan;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    grid-gap: 0px;
+}
+
+#stream-divider {
+    height: 100%;
+    width: 1%;
+    background-color: lightslategray;
+}
+
+.stream {
+    aspect-ratio: 16 / 9;
+    border: 1px solid black;
+    background-color: cyan;
+    width: 100%;
+}
+
+.stream-left {
+    grid-column: 1;
+}
+
+.stream-right {
+    grid-column: 2;
+}
+
+.stream-top {
+    grid-row-start: 2;
+    grid-row-end: 4;
+}
+
+.stream-center {
+    grid-row-start: 4;
+    grid-row-end: 6;
+}
+
+.stream-bottom {
+    grid-row-start: 6;
+    grid-row-end: 8;
+}
+
+.stream-high {
+    grid-row: 1;
+}
+
+.stream-mid-high {
+    grid-row: 3;
+}
+
+.stream-mid-low {
+    grid-row: 5;
+}
+
+.stream-low {
+    grid-row: 8;
+}
+
+.stream-name {
+    background-color: gray;
+    width: 100%;
+    height: 100%;
 }
