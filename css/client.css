@@ -251,7 +251,8 @@ body {
 .stream {
     aspect-ratio: 16 / 9;
     background-color: cyan;
-    width: 100%;
+    width: 95%;
+    margin: 1px;
 }
 
 .stream-left {
