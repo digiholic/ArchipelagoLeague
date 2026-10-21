@@ -235,7 +235,6 @@ body {
 .streams {
     aspect-ratio: 16 / 9;
     width: 49%;
-    box-shadow: 3px 3px 5px inset;
     background-color: lightcyan;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -251,7 +250,6 @@ body {
 
 .stream {
     aspect-ratio: 16 / 9;
-    border: 1px solid black;
     background-color: cyan;
     width: 100%;
 }
