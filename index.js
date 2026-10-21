@@ -353,13 +353,13 @@ const init = function() {
         $("footer").hide();
     }
 
-    $("#left-stream-1").append(getStreamEmbedDOMelement(stream1A));
-    $("#left-stream-2").append(getStreamEmbedDOMelement(stream2A));
-    $("#left-stream-3").append(getStreamEmbedDOMelement(stream3A));
+    enqueueFunction(() => $("#left-stream-1").append(getStreamEmbedDOMelement(stream1A)));
+    enqueueFunction(() => $("#left-stream-2").append(getStreamEmbedDOMelement(stream2A)));
+    enqueueFunction(() => $("#left-stream-3").append(getStreamEmbedDOMelement(stream3A)));
 
-    $("#right-stream-1").append(getStreamEmbedDOMelement(stream1B));
-    $("#right-stream-2").append(getStreamEmbedDOMelement(stream2B));
-    $("#right-stream-3").append(getStreamEmbedDOMelement(stream3B));
+    enqueueFunction(() => $("#right-stream-1").append(getStreamEmbedDOMelement(stream1B)));
+    enqueueFunction(() => $("#right-stream-2").append(getStreamEmbedDOMelement(stream2B)));
+    enqueueFunction(() => $("#right-stream-3").append(getStreamEmbedDOMelement(stream3B)));
 }
 
 init();
