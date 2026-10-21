@@ -203,8 +203,22 @@ $("#right-connect-button").on("click", function() {
 });
 
 $("#copy-url").on("click", function() {
+    var queryStr = getQueryStr();
+    var querylessUrl = location.protocol + "//" + location.host + location.pathname;
+    navigator.clipboard.writeText(querylessUrl + "?" + queryStr);
+});
+
+$("#load-data-button").on("click", function() {
+    var queryStr = getQueryStr();
+    var querylessUrl = location.protocol + "//" + location.host + location.pathname;
+    window.location.href = querylessUrl + "?" + queryStr;
+});
+
+const checkCounts = {}
+
+const getQueryStr = function() {
     var data = {
-        autoconnect: "false",
+        autoconnect: $("#autoconnect").checked,
 
         nameA: $("#left-team-name").val(),
         serverA: $("#left-server-address").val(),
@@ -235,14 +249,8 @@ $("#copy-url").on("click", function() {
         stream3B: $("#right-player-3-stream").val(),
     };
 
-    var queryStr = new URLSearchParams(data).toString();
-    var querylessUrl = location.protocol + "//" + location.host + location.pathname;
-    //console.log(querylessUrl.toString() + "?" + queryStr);
-    navigator.clipboard.writeText(querylessUrl + "?" + queryStr);
-});
-
-const checkCounts = {}
-
+    return new URLSearchParams(data).toString();
+}
 const trackerApi = async function(trackerUrl, side) {
     if (checkCounts[side] == null) checkCounts[side] = {};
 
@@ -340,6 +348,8 @@ const init = function() {
     $("#right-player-1-stream").val(stream1B);
     $("#right-player-2-stream").val(stream2B);
     $("#right-player-3-stream").val(stream3B);
+
+    $("#autoconnect").checked = urlParams.get("autoconnect") == "true";
 
     if (urlParams.get("autoconnect") == "true") {
         connect(left_client, serverA, slotA, passwdA, "left");
