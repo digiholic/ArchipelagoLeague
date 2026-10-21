@@ -272,7 +272,7 @@ const trackerApi = async function(trackerUrl, side) {
 
 const getStreamEmbedDOMelement = function(channel) {
     var frame = $("<iframe>", {
-        src: "https://player.twitch.tv/?muted=true&channel=" + channel + "&parent=digiholic.github.io",
+        src: "https://player.twitch.tv/?autoplay=true&muted=true&channel=" + channel + "&parent=digiholic.github.io",
         height: 266.6,
         width: 472.4
     });
