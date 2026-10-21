@@ -212,13 +212,13 @@ $("#copy-url").on("click", function() {
         passwdA: $("#left-server-passwd").val(),
         trackerA: $("#left-tracker-url").val(),
 
-        player1A: $("left-player-1-name").val(),
-        player2A: $("left-player-2-name").val(),
-        player3A: $("left-player-3-name").val(),
+        player1A: $("#left-player-1-name").val(),
+        player2A: $("#left-player-2-name").val(),
+        player3A: $("#left-player-3-name").val(),
 
-        stream1A: $("left-player-1-stream").val(),
-        stream2A: $("left-player-2-stream").val(),
-        stream3A: $("left-player-3-stream").val(),
+        stream1A: $("#left-player-1-stream").val(),
+        stream2A: $("#left-player-2-stream").val(),
+        stream3A: $("#left-player-3-stream").val(),
 
         nameB: $("#right-team-name").val(),
         serverB: $("#right-server-address").val(),
@@ -226,13 +226,13 @@ $("#copy-url").on("click", function() {
         passwdB: $("#right-server-passwd").val(),
         trackerB: $("#right-tracker-url").val(),
 
-        player1B: $("right-player-1-name").val(),
-        player2B: $("right-player-2-name").val(),
-        player3B: $("right-player-3-name").val(),
+        player1B: $("#right-player-1-name").val(),
+        player2B: $("#right-player-2-name").val(),
+        player3B: $("#right-player-3-name").val(),
 
-        stream1B: $("right-player-1-stream").val(),
-        stream2B: $("right-player-2-stream").val(),
-        stream3B: $("right-player-3-stream").val(),
+        stream1B: $("#right-player-1-stream").val(),
+        stream2B: $("#right-player-2-stream").val(),
+        stream3B: $("#right-player-3-stream").val(),
     };
 
     var queryStr = new URLSearchParams(data).toString();
@@ -271,11 +271,13 @@ const trackerApi = async function(trackerUrl, side) {
 }
 
 const getStreamEmbedDOMelement = function(channel) {
-    return $("<iframe>", {
-        src: "https://player.twitch.tv/" + channel + "&parent=digiholic.github.io",
+    var frame = $("<iframe>", {
+        src: "https://player.twitch.tv/?muted=true&channel=" + channel + "&parent=digiholic.github.io",
         height: 266.6,
         width: 472.4
     });
+    console.log(frame);
+    return frame;
 }
 
 const init = function() {
@@ -298,17 +300,17 @@ const init = function() {
     var player2A = urlParams.get("player2A");
     var player3A = urlParams.get("player3A");
 
-    $("left-player-1-name").val(player1A);
-    $("left-player-2-name").val(player2A);
-    $("left-player-3-name").val(player3A);
+    $("#left-player-1-name").val(player1A);
+    $("#left-player-2-name").val(player2A);
+    $("#left-player-3-name").val(player3A);
 
     var stream1A = urlParams.get("stream1A");
     var stream2A = urlParams.get("stream2A");
     var stream3A = urlParams.get("stream3A");
 
-    $("left-player-1-stream").val(stream1A);
-    $("left-player-2-stream").val(stream2A);
-    $("left-player-3-stream").val(stream3A);
+    $("#left-player-1-stream").val(stream1A);
+    $("#left-player-2-stream").val(stream2A);
+    $("#left-player-3-stream").val(stream3A);
 
     var nameB = urlParams.get("nameB");
     var serverB = urlParams.get("serverB");
@@ -329,17 +331,17 @@ const init = function() {
     var player2B = urlParams.get("player2B");
     var player3B = urlParams.get("player3B");
 
-    $("right-player-1-name").val(player1B);
-    $("right-player-2-name").val(player2B);
-    $("right-player-3-name").val(player3B);
+    $("#right-player-1-name").val(player1B);
+    $("#right-player-2-name").val(player2B);
+    $("#right-player-3-name").val(player3B);
 
     var stream1B = urlParams.get("stream1B");
     var stream2B = urlParams.get("stream2B");
     var stream3B = urlParams.get("stream3B");
 
-    $("right-player-1-stream").val(stream1B);
-    $("right-player-2-stream").val(stream2B);
-    $("right-player-3-stream").val(stream3B);
+    $("#right-player-1-stream").val(stream1B);
+    $("#right-player-2-stream").val(stream2B);
+    $("#right-player-3-stream").val(stream3B);
 
     if (urlParams.get("autoconnect") == "true") {
         connect(left_client, serverA, slotA, passwdA, "left");
@@ -351,15 +353,13 @@ const init = function() {
         $("footer").hide();
     }
 
-    if (stream1A != null && stream1A != "") {
-        $("left-stream-1").append(getStreamEmbedDOMelement(stream1A));
-        $("left-stream-2").append(getStreamEmbedDOMelement(stream2A));
-        $("left-stream-3").append(getStreamEmbedDOMelement(stream3A));
+    $("#left-stream-1").append(getStreamEmbedDOMelement(stream1A));
+    $("#left-stream-2").append(getStreamEmbedDOMelement(stream2A));
+    $("#left-stream-3").append(getStreamEmbedDOMelement(stream3A));
 
-        $("left-stream-1").append(getStreamEmbedDOMelement(stream1B));
-        $("left-stream-2").append(getStreamEmbedDOMelement(stream2B));
-        $("left-stream-3").append(getStreamEmbedDOMelement(stream3B));
-    }
+    $("#right-stream-1").append(getStreamEmbedDOMelement(stream1B));
+    $("#right-stream-2").append(getStreamEmbedDOMelement(stream2B));
+    $("#right-stream-3").append(getStreamEmbedDOMelement(stream3B));
 }
 
 init();

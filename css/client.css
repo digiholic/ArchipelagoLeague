@@ -2,6 +2,8 @@ body {
     font-family: "Helvetica", Sans-Serif;
     width: 1920px;
     height: 1080px;
+    scrollbar-width: none;
+    overflow: hidden;
 }
 
 #multi-tracker {
