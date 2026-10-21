@@ -273,8 +273,6 @@ const trackerApi = async function(trackerUrl, side) {
 const getStreamEmbedDOMelement = function(channel) {
     var frame = $("<iframe>", {
         src: "https://player.twitch.tv/?autoplay=true&muted=true&channel=" + channel + "&parent=digiholic.github.io",
-        height: 260,
-        width: 462
     });
     console.log(frame);
     return frame;
@@ -353,13 +351,18 @@ const init = function() {
         $("footer").hide();
     }
 
-    enqueueFunction(() => $("#left-stream-1").append(getStreamEmbedDOMelement(stream1A)));
-    enqueueFunction(() => $("#left-stream-2").append(getStreamEmbedDOMelement(stream2A)));
-    enqueueFunction(() => $("#left-stream-3").append(getStreamEmbedDOMelement(stream3A)));
-
-    enqueueFunction(() => $("#right-stream-1").append(getStreamEmbedDOMelement(stream1B)));
-    enqueueFunction(() => $("#right-stream-2").append(getStreamEmbedDOMelement(stream2B)));
-    enqueueFunction(() => $("#right-stream-3").append(getStreamEmbedDOMelement(stream3B)));
+    if (stream1A != null && stream1A != "")
+        enqueueFunction(() => $("#left-stream-1").append(getStreamEmbedDOMelement(stream1A)));
+    if (stream2A != null && stream2A != "")
+        enqueueFunction(() => $("#left-stream-2").append(getStreamEmbedDOMelement(stream2A)));
+    if (stream3A != null && stream3A != "")
+        enqueueFunction(() => $("#left-stream-3").append(getStreamEmbedDOMelement(stream3A)));
+    if (stream3B != null && stream3B != "")
+        enqueueFunction(() => $("#right-stream-1").append(getStreamEmbedDOMelement(stream1B)));
+    if (stream2B != null && stream2B != "")
+        enqueueFunction(() => $("#right-stream-2").append(getStreamEmbedDOMelement(stream2B)));
+    if (stream3B != null && stream3B != "")
+        enqueueFunction(() => $("#right-stream-3").append(getStreamEmbedDOMelement(stream3B)));
 }
 
 init();
