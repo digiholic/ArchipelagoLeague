@@ -1,3 +1,12 @@
+@font-face {
+    font-family: fighter;
+    src: url(../resources/fonts/edosz.ttf);
+}
+
+html {
+    scrollbar-width: none;
+}
+
 body {
     font-family: "Helvetica", Sans-Serif;
     width: 1920px;
@@ -232,12 +241,13 @@ body {
 
 .streams {
     aspect-ratio: 16 / 9;
-    width: 49%;
+    width: 50%;
     background-color: lightcyan;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(8, 1fr);
     grid-gap: 0px;
+    place-items: center;
 }
 
 #stream-divider {
@@ -253,6 +263,7 @@ body {
     align-items: center;
     align-content: center;
     display: flex;
+    place-self: center;
 }
 
 .stream>iframe {
@@ -303,4 +314,47 @@ body {
     background-color: gray;
     width: 100%;
     height: 100%;
+}
+
+#advantage-bar {
+    border: 4px outset black;
+    border-radius: 32px;
+    overflow: hidden;
+    background-color: white;
+    position: absolute;
+    top: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 64px;
+    display: flex;
+}
+
+#advantage-left {
+    background-color: blue;
+    border-right: 2px solid white;
+    text-align: right;
+    width: 60%;
+}
+
+#advantage-right {
+    background-color: red;
+    border-left: 2px solid white;
+    text-align: left;
+    width: 40%;
+}
+
+.team-advantage-bar {
+    height: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+.advantage-bar-label {
+    width: 100%;
+    height: 100%;
+    font-size: 48px;
+    font-family: fighter;
+    color: white;
+    text-shadow: black 3px 3px;
 }

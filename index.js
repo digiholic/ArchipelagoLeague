@@ -4,6 +4,11 @@ import { ProgressBar } from "./js/progressBar.js"
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
+const left_client = new Client();
+const right_client = new Client();
+const checkCounts = {}
+const progressBars = {};
+
 const connect = function(client, address, slot, password, side) {
     if (address == null || address == "") return;
     if (slot == null || slot == "") return;
@@ -20,8 +25,6 @@ const connect = function(client, address, slot, password, side) {
         })
         .catch(console.error);
 }
-
-const progressBars = {};
 
 const populatePlayers = function(client, side) {
     if (progressBars[side] == null) progressBars[side] = {};
@@ -41,7 +44,6 @@ const populatePlayers = function(client, side) {
 
         $("#" + side + "-slots").append(slotElement);
     }
-    console.log(progressBars);
 }
 
 const syncProgression = function(side, player_id) {
@@ -51,6 +53,7 @@ const syncProgression = function(side, player_id) {
         var progressBar = progressBars[side][player_id];
         progressBar.updateValue(items_collected, items_total);
     }
+    updateTugOfWarStatus();
 }
 
 const getClassificationString = function(flags) {
@@ -156,9 +159,6 @@ const executeNextFunction = function() {
     }
 }
 
-const left_client = new Client();
-const right_client = new Client();
-
 left_client.messages.on("itemSent", teamClientMessage("left"));
 right_client.messages.on("itemSent", teamClientMessage("right"));
 
@@ -214,21 +214,15 @@ $("#load-data-button").on("click", function() {
     window.location.href = querylessUrl + "?" + queryStr;
 });
 
-const checkCounts = {}
-
 const getQueryStr = function() {
     var data = {
-        autoconnect: $("#autoconnect").checked,
+        autoconnect: $("#autoconnect")[0].checked.toString(),
 
         nameA: $("#left-team-name").val(),
         serverA: $("#left-server-address").val(),
         slotA: $("#left-server-slot").val(),
         passwdA: $("#left-server-passwd").val(),
         trackerA: $("#left-tracker-url").val(),
-
-        player1A: $("#left-player-1-name").val(),
-        player2A: $("#left-player-2-name").val(),
-        player3A: $("#left-player-3-name").val(),
 
         stream1A: $("#left-player-1-stream").val(),
         stream2A: $("#left-player-2-stream").val(),
@@ -240,10 +234,6 @@ const getQueryStr = function() {
         passwdB: $("#right-server-passwd").val(),
         trackerB: $("#right-tracker-url").val(),
 
-        player1B: $("#right-player-1-name").val(),
-        player2B: $("#right-player-2-name").val(),
-        player3B: $("#right-player-3-name").val(),
-
         stream1B: $("#right-player-1-stream").val(),
         stream2B: $("#right-player-2-stream").val(),
         stream3B: $("#right-player-3-stream").val(),
@@ -251,6 +241,7 @@ const getQueryStr = function() {
 
     return new URLSearchParams(data).toString();
 }
+
 const trackerApi = async function(trackerUrl, side) {
     if (checkCounts[side] == null) checkCounts[side] = {};
 
@@ -272,17 +263,42 @@ const trackerApi = async function(trackerUrl, side) {
         };
 
         if (progressBars[side] != null && progressBars[side][player_id] != null) {
-            console.log(progressBars[side][player_id]);
             progressBars[side][player_id].updateValue(checks_done, checks_total);
         }
     }
+}
+
+const updateTugOfWarStatus = function() {
+    var leftTotal = 0;
+    var rightTotal = 0;
+    for (var key in checkCounts["left"]) {
+        leftTotal += checkCounts["left"][key]["done"];
+    }
+    for (var key in checkCounts["right"]) {
+        rightTotal += checkCounts["right"][key]["done"];
+    }
+
+    console.log(checkCounts);
+    var overall = leftTotal + rightTotal;
+    //To avoid division by zero. Default to 50/50, and if no checks have been collected, skip the actual computation
+    var leftPercent = 50;
+    var rightPercent = 50;
+
+    if (overall != 0) {
+        leftPercent = (leftTotal / overall) * 100;
+        rightPercent = (rightTotal / overall) * 100;
+    }
+
+    $("#advantage-left").width(leftPercent + "%");
+    $("#advantage-right").width(rightPercent + "%");
+    $("#advantage-left-label").text(leftPercent.toFixed(0) + "%");
+    $("#advantage-right-label").text(rightPercent.toFixed(0) + "%");
 }
 
 const getStreamEmbedDOMelement = function(channel) {
     var frame = $("<iframe>", {
         src: "https://player.twitch.tv/?autoplay=true&muted=true&channel=" + channel + "&parent=digiholic.github.io",
     });
-    console.log(frame);
     return frame;
 }
 
@@ -301,14 +317,6 @@ const init = function() {
     $("#left-team-name").val(nameA);
     $("#team-header-left").text(nameA);
     $("#left-tracker-url").val(trackerA);
-
-    var player1A = urlParams.get("player1A");
-    var player2A = urlParams.get("player2A");
-    var player3A = urlParams.get("player3A");
-
-    $("#left-player-1-name").val(player1A);
-    $("#left-player-2-name").val(player2A);
-    $("#left-player-3-name").val(player3A);
 
     var stream1A = urlParams.get("stream1A");
     var stream2A = urlParams.get("stream2A");
@@ -333,14 +341,6 @@ const init = function() {
     $("#team-header-right").text(nameB);
     $("#right-tracker-url").val(trackerB);
 
-    var player1B = urlParams.get("player1B");
-    var player2B = urlParams.get("player2B");
-    var player3B = urlParams.get("player3B");
-
-    $("#right-player-1-name").val(player1B);
-    $("#right-player-2-name").val(player2B);
-    $("#right-player-3-name").val(player3B);
-
     var stream1B = urlParams.get("stream1B");
     var stream2B = urlParams.get("stream2B");
     var stream3B = urlParams.get("stream3B");
@@ -349,14 +349,14 @@ const init = function() {
     $("#right-player-2-stream").val(stream2B);
     $("#right-player-3-stream").val(stream3B);
 
-    $("#autoconnect").checked = urlParams.get("autoconnect") == "true";
+    $("#autoconnect")[0].checked = urlParams.get("autoconnect") == "true";
 
     if (urlParams.get("autoconnect") == "true") {
         connect(left_client, serverA, slotA, passwdA, "left");
         setTimeout(() => connect(right_client, serverB, slotB, passwdB, "right"), 100);
 
-        trackerApi($("#left-tracker-url").val(), "left");
-        trackerApi($("#right-tracker-url").val(), "right");
+        enqueueFunction(() => trackerApi($("#left-tracker-url").val(), "left"));
+        enqueueFunction(() => trackerApi($("#right-tracker-url").val(), "right"));
 
         $("footer").hide();
     }
