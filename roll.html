@@ -9,6 +9,22 @@
         <h1 id="game-1">Game #1</h1>
         <h1 id="game-2">Game #2</h1>
         <h1 id="game-3">Game #3</h1>
-        <button id="roll">Roll em!</button>
+        <div>
+            <button id="roll">Roll em!</button>
+        </div>
+        <div>
+            <span>
+                <input type="radio" id="short" name="list-type" value="short" checked>
+                <label for="short">Short List</label>
+            </span>
+            <span>
+                <input type="radio" id="extended" name="list-type" value="extended">
+                <label for="extended">Extended List</label>
+            </span>
+        </div>
+        <div>
+            <button id="good-button" style="display:none">That's good!</button>
+            <p id="good-count"></p>
+        </div>
     </div>
 </body>
