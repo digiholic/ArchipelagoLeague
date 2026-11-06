@@ -5,70 +5,91 @@
 </header>
 
 <body>
-    <div id="advantage-bar">
-        <div id="advantage-left" class="team-advantage-bar">
-            <div id="advantage-left-label" class="advantage-bar-label">L%</div>
+    <div id="top-section">
+        <div id="top-bar">
+            <div id="team-left-name">Left Team</div>
+            <div id="vs-title">VS</div>
+            <div id="team-right-name">Right Team</div>
         </div>
-        <div id="advantage-right" class="team-advantage-bar">
-            <div id="advantage-right-label" class="advantage-bar-label">R%</div>
-        </div>
-    </div>
-    <div id="stream-viewer">
-        <div id="left-streams" class="streams">
-            <div id="left-stream-1" class="stream stream-equal stream-top stream-left">
+        <div id="advantage-bar">
+            <div id="advantage-left" class="team-advantage-bar">
+                <div id="advantage-left-label" class="advantage-bar-label">L%</div>
             </div>
-            <div id="left-stream-2" class="stream stream-equal stream-center stream-right">
-            </div>
-            <div id="left-stream-3" class="stream stream-equal stream-bottom stream-left">
+            <div id="advantage-right" class="team-advantage-bar">
+                <div id="advantage-right-label" class="advantage-bar-label">R%</div>
             </div>
         </div>
-        <div id="stream-divider"></div>
-        <div id="right-streams" class="streams">
-            <div id="right-stream-1" class="stream stream-equal stream-top stream-right">
+        <div id="stream-viewer">
+            <div id="left-streams" class="streams">
+                <div class="stream-column">
+                    <div id="left-stream-1" class="stream stream-equal stream-top stream-left"></div>
+                    <div class="void-fill void-fill-w100 void-fill-h5"></div>
+                    <div id="left-stream-3" class="stream stream-equal stream-bottom stream-left">
+                    </div>
+                </div>
+
+                <div class="stream-column">
+                    <div class="void-fill void-fill-w100 void-fill-h25"></div>
+                    <div id="left-stream-2" class="stream stream-equal stream-center stream-right"></div>
+                    <div class="void-fill void-fill-w100 void-fill-h25"></div>
+                </div>
             </div>
-            <div id="right-stream-2" class="stream stream-equal stream-center stream-left">
-            </div>
-            <div id="right-stream-3" class="stream stream-equal stream-bottom stream-right">
+            <div id="stream-divider"></div>
+            <div id="right-streams" class="streams">
+                <div class="stream-column">
+                    <div class="void-fill void-fill-w100 void-fill-h25"></div>
+                    <div id="right-stream-2" class="stream stream-equal stream-center stream-left"></div>
+                    <div class="void-fill void-fill-w100 void-fill-h25"></div>
+                </div>
+                <div class="stream-column">
+                    <div id="right-stream-1" class="stream stream-equal stream-top stream-right"></div>
+                    <div class="void-fill void-fill-w100 void-fill-h5"></div>
+                    <div id="right-stream-3" class="stream stream-equal stream-bottom stream-right"></div>
+                </div>
             </div>
         </div>
     </div>
     <div id="spacer"></div>
-    <div id="multi-tracker">
-        <div id="left-team-banner" class="hex-bg">
-            <div id="left-connections" class="connection-panel">
-                <label for="left-server-address">Address:</label>
-                <input type="text" id="left-server-address">
-                <label for="left-server-slot">Slot:</label>
-                <input type="text" id="left-server-slot">
-                <label for="left-server-passwd">Password (Blank if none):</label>
-                <input type="password" id="left-server-passwd">
-                <button id="left-connect-button">Connect</button>
+    <div id="bottom-section">
+        <div class="void-fill void-fill-w15 void-fill-h100"></div>
+        <div id="multi-tracker">
+            <div id="left-team-banner" class="hex-bg">
+                <div id="left-connections" class="connection-panel">
+                    <label for="left-server-address">Address:</label>
+                    <input type="text" id="left-server-address">
+                    <label for="left-server-slot">Slot:</label>
+                    <input type="text" id="left-server-slot">
+                    <label for="left-server-passwd">Password (Blank if none):</label>
+                    <input type="password" id="left-server-passwd">
+                    <button id="left-connect-button">Connect</button>
+                </div>
+                <div id="left-slots" style="display:none">
+                    <div class="team-header left">
+                        <h1 id="team-header-left">Blue Team</h1>
+                    </div>
+                </div>
             </div>
-            <div id="left-slots" style="display:none">
-                <div class="team-header left">
-                    <h1 id="team-header-left">Blue Team</h1>
+            <div id="client-area">
+                <div id="text-client"></div>
+            </div>
+            <div id="right-team-banner" class="hex-bg">
+                <div id="right-connections" class="connection-panel">
+                    <label for="right-server-address">Address:</label>
+                    <input type="text" id="right-server-address">
+                    <label for="right-server-slot">Slot:</label>
+                    <input type="text" id="right-server-slot">
+                    <label for="right-server-passwd">Password (Blank if none):</label>
+                    <input type="password" id="right-server-passwd">
+                    <button id="right-connect-button">Connect</button>
+                </div>
+                <div id="right-slots" style="display:none">
+                    <div class="team-header right">
+                        <h1 id="team-header-right">Red Team</h1>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="client-area">
-            <div id="text-client"></div>
-        </div>
-        <div id="right-team-banner" class="hex-bg">
-            <div id="right-connections" class="connection-panel">
-                <label for="right-server-address">Address:</label>
-                <input type="text" id="right-server-address">
-                <label for="right-server-slot">Slot:</label>
-                <input type="text" id="right-server-slot">
-                <label for="right-server-passwd">Password (Blank if none):</label>
-                <input type="password" id="right-server-passwd">
-                <button id="right-connect-button">Connect</button>
-            </div>
-            <div id="right-slots" style="display:none">
-                <div class="team-header right">
-                    <h1 id="team-header-right">Red Team</h1>
-                </div>
-            </div>
-        </div>
+        <div class="void-fill void-fill-w15 void-fill-h100"></div>
     </div>
 </body>
 <footer>

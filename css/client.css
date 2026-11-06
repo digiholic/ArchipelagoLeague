@@ -13,11 +13,186 @@ body {
     height: 1080px;
 }
 
+#top-section {
+    height: 59%;
+    width: 100%;
+    display: flex;
+}
+
+#spacer {
+    height: 1%;
+    width: 100%;
+    background-color: darkslategray;
+}
+
+#bottom-section {
+    height: 40%;
+    width: 100%;
+    display: flex;
+}
+
+#stream-viewer {
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    border: 2px solid black;
+}
+
+#stream-divider {
+    height: 100%;
+    width: 1%;
+    background-color: darkslategray;
+}
+
+.streams {
+    aspect-ratio: 16 / 9;
+    width: 49.5%;
+    background-color: lightcyan;
+    display: flex;
+    padding-top: 64px;
+}
+
+.stream-column {
+    width: 50%;
+    height: 100%;
+    display: grid;
+}
+
+.stream {
+    aspect-ratio: 16 / 9;
+    background-color: #6441A5;
+    width: 99%;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    place-self: center;
+}
+
+.stream>iframe {
+    height: 100%;
+    width: 100%;
+}
+
+.stream-name {
+    background-color: gray;
+    width: 100%;
+    height: 100%;
+}
+
+#top-bar {
+    position: absolute;
+    width: 100%;
+    height: 48px;
+    background-color: darkslategray;
+    display: flex;
+}
+
+#team-left-name {
+    width: 50%;
+    height: 100%;
+    text-align: right;
+    padding-right: 5%;
+    font-family: fighter;
+    color: white;
+    font-size: 2em;
+}
+
+#team-right-name {
+    width: 50%;
+    height: 100%;
+    text-align: left;
+    padding-left: 5%;
+    font-family: fighter;
+    color: white;
+    font-size: 2em;
+}
+
+#vs-title {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    font-family: fighter;
+    text-align: center;
+    color: black;
+    font-size: 2em;
+}
+
+#advantage-bar {
+    clip-path: polygon( 0 0, 100% 0, 90% 100%, 10% 100%);
+    overflow: hidden;
+    background-color: white;
+    position: absolute;
+    top: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 32px;
+    display: flex;
+}
+
+#advantage-left {
+    background-color: blue;
+    border-right: 2px solid white;
+    text-align: right;
+    width: 60%;
+}
+
+#advantage-right {
+    background-color: red;
+    border-left: 2px solid white;
+    text-align: left;
+    width: 40%;
+}
+
+.team-advantage-bar {
+    height: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+.advantage-bar-label {
+    width: 100%;
+    height: 100%;
+    font-size: 1em;
+    font-family: fighter;
+    color: white;
+    text-shadow: black 3px 3px;
+}
+
+.void-fill {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.void-fill-w1 {
+    width: 1%;
+}
+
+.void-fill-w15 {
+    width: 15%;
+}
+
+.void-fill-w100 {
+    width: 100%;
+}
+
+.void-fill-h5 {
+    height: 5%;
+}
+
+.void-fill-h25 {
+    height: 25%;
+}
+
+.void-fill-h100 {
+    height: 100%;
+}
+
 #multi-tracker {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    height: 33%;
+    width: 70%;
+    height: 100%;
 }
 
 .connection-panel {
@@ -229,132 +404,4 @@ body {
 
 .team-header.right {
     text-shadow: 5px 5px 5px red;
-}
-
-#stream-viewer {
-    height: 67%;
-    width: 100%;
-    background-color: transparent;
-    display: flex;
-    border: 2px solid black;
-}
-
-.streams {
-    aspect-ratio: 16 / 9;
-    width: 50%;
-    background-color: lightcyan;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    grid-gap: 0px;
-    place-items: center;
-}
-
-#stream-divider {
-    height: 100%;
-    width: 1%;
-    background-color: lightslategray;
-}
-
-.stream {
-    aspect-ratio: 16 / 9;
-    background-color: cyan;
-    width: 99%;
-    align-items: center;
-    align-content: center;
-    display: flex;
-    place-self: center;
-}
-
-.stream>iframe {
-    height: 100%;
-    width: 100%;
-}
-
-.stream-left {
-    grid-column: 1;
-}
-
-.stream-right {
-    grid-column: 2;
-}
-
-.stream-top {
-    grid-row-start: 2;
-    grid-row-end: 4;
-}
-
-.stream-center {
-    grid-row-start: 4;
-    grid-row-end: 6;
-}
-
-.stream-bottom {
-    grid-row-start: 6;
-    grid-row-end: 8;
-}
-
-.stream-high {
-    grid-row: 1;
-}
-
-.stream-mid-high {
-    grid-row: 3;
-}
-
-.stream-mid-low {
-    grid-row: 5;
-}
-
-.stream-low {
-    grid-row: 8;
-}
-
-.stream-name {
-    background-color: gray;
-    width: 100%;
-    height: 100%;
-}
-
-#advantage-bar {
-    border: 4px outset black;
-    border-radius: 32px;
-    overflow: hidden;
-    background-color: white;
-    position: absolute;
-    top: 64px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 30%;
-    height: 64px;
-    display: flex;
-}
-
-#advantage-left {
-    background-color: blue;
-    border-right: 2px solid white;
-    text-align: right;
-    width: 60%;
-}
-
-#advantage-right {
-    background-color: red;
-    border-left: 2px solid white;
-    text-align: left;
-    width: 40%;
-}
-
-.team-advantage-bar {
-    height: 100%;
-    padding: 6px;
-    box-sizing: border-box;
-}
-
-.advantage-bar-label {
-    width: 100%;
-    height: 100%;
-    font-size: 48px;
-    font-family: fighter;
-    color: white;
-    text-shadow: black 3px 3px;
 }

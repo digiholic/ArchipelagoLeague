@@ -1,5 +1,5 @@
-import { Client, defaultConnectionOptions } from "./js/archipelago.js";
-import { ProgressBar } from "./js/progressBar.js"
+import { Client, defaultConnectionOptions } from "./archipelago.js";
+import { ProgressBar } from "./progressBar.js"
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
