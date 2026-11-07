@@ -5,11 +5,13 @@
 </header>
 
 <body>
+    <img src="resources/images/digis_archistreamlayout_cozy_gremlin.png" id="overlay-background"></img>
+    <img src="resources/images/digis_archistreamlayout_cozy_gremlin_fore.png" id="overlay-foreground"></img>
     <div id="top-section">
         <div id="top-bar">
-            <div id="team-left-name">Left Team</div>
+            <div id="team-left-header">Left Team</div>
             <div id="vs-title">VS</div>
-            <div id="team-right-name">Right Team</div>
+            <div id="team-right-header">Right Team</div>
         </div>
         <div id="advantage-bar">
             <div id="advantage-left" class="team-advantage-bar">
@@ -64,9 +66,11 @@
                     <button id="left-connect-button">Connect</button>
                 </div>
                 <div id="left-slots" style="display:none">
+                    <!--
                     <div class="team-header left">
                         <h1 id="team-header-left">Blue Team</h1>
                     </div>
+                    -->
                 </div>
             </div>
             <div id="client-area">
@@ -83,9 +87,11 @@
                     <button id="right-connect-button">Connect</button>
                 </div>
                 <div id="right-slots" style="display:none">
+                    <!--
                     <div class="team-header right">
                         <h1 id="team-header-right">Red Team</h1>
                     </div>
+                    -->
                 </div>
             </div>
         </div>
@@ -105,19 +111,19 @@
         <div>
             <label for="left-player-1-name">Player 1 Name:</label>
             <input type="text" id="left-player-1-name">
-            <label for="left-player-1-stream">Player 1 Stream Link:</label>
+            <label for="left-player-1-stream">Player 1 Twitch:</label>
             <input type="text" id="left-player-1-stream">
         </div>
         <div>
             <label for="left-player-2-name">Player 2 Name:</label>
             <input type="text" id="left-player-2-name">
-            <label for="left-player-2-stream">Player 2 Stream Link:</label>
+            <label for="left-player-2-stream">Player 2 Twitch:</label>
             <input type="text" id="left-player-2-stream">
         </div>
         <div>
             <label for="left-player-3-name">Player 3 Name:</label>
             <input type="text" id="left-player-3-name">
-            <label for="left-player-3-stream">Player 3 Stream Link:</label>
+            <label for="left-player-3-stream">Player 3 Twitch:</label>
             <input type="text" id="left-player-3-stream">
         </div>
     </fieldset>
@@ -131,14 +137,20 @@
             <input type="text" id="right-tracker-url">
         </div>
         <div>
+            <label for="right-player-1-name">Player 1 Name:</label>
+            <input type="text" id="right-player-1-name">
             <label for="right-player-1-stream">Player 1 Twitch:</label>
             <input type="text" id="right-player-1-stream">
         </div>
         <div>
+            <label for="right-player-2-name">Player 2 Name:</label>
+            <input type="text" id="right-player-2-name">
             <label for="right-player-2-stream">Player 2 Twitch:</label>
             <input type="text" id="right-player-2-stream">
         </div>
         <div>
+            <label for="right-player-3-name">Player 3 Name:</label>
+            <input type="text" id="right-player-3-name">
             <label for="right-player-3-stream">Player 3 Twitch:</label>
             <input type="text" id="right-player-3-stream">
         </div>

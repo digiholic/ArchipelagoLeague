@@ -11,6 +11,23 @@ body {
     font-family: "Helvetica", Sans-Serif;
     width: 1920px;
     height: 1080px;
+    margin: 0px;
+}
+
+#overlay-background {
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+    z-index: -10;
+    pointer-events: none;
+}
+
+#overlay-foreground {
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
 }
 
 #top-section {
@@ -22,7 +39,7 @@ body {
 #spacer {
     height: 1%;
     width: 100%;
-    background-color: darkslategray;
+    background-color: transparent;
 }
 
 #bottom-section {
@@ -42,13 +59,13 @@ body {
 #stream-divider {
     height: 100%;
     width: 1%;
-    background-color: darkslategray;
+    background-color: transparent;
 }
 
 .streams {
     aspect-ratio: 16 / 9;
     width: 49.5%;
-    background-color: lightcyan;
+    background-color: transparent;
     display: flex;
     padding-top: 64px;
 }
@@ -61,7 +78,7 @@ body {
 
 .stream {
     aspect-ratio: 16 / 9;
-    background-color: #6441A5;
+    background-color: transparent;
     width: 99%;
     align-items: center;
     align-content: center;
@@ -75,7 +92,7 @@ body {
 }
 
 .stream-name {
-    background-color: gray;
+    background-color: transparent;
     width: 100%;
     height: 100%;
 }
@@ -84,11 +101,11 @@ body {
     position: absolute;
     width: 100%;
     height: 48px;
-    background-color: darkslategray;
+    background-color: transparent;
     display: flex;
 }
 
-#team-left-name {
+#team-left-header {
     width: 50%;
     height: 100%;
     text-align: right;
@@ -98,7 +115,7 @@ body {
     font-size: 2em;
 }
 
-#team-right-name {
+#team-right-header {
     width: 50%;
     height: 100%;
     text-align: left;
@@ -119,27 +136,28 @@ body {
 }
 
 #advantage-bar {
+    border: 3px solid black;
     clip-path: polygon( 0 0, 100% 0, 90% 100%, 10% 100%);
     overflow: hidden;
     background-color: white;
     position: absolute;
-    top: 56px;
+    top: 48px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translate(-8px);
     width: 30%;
     height: 32px;
     display: flex;
 }
 
 #advantage-left {
-    background-color: blue;
+    background-color: #58E2FB;
     border-right: 2px solid white;
     text-align: right;
     width: 60%;
 }
 
 #advantage-right {
-    background-color: red;
+    background-color: #A124C7;
     border-left: 2px solid white;
     text-align: left;
     width: 40%;
@@ -229,15 +247,13 @@ body {
 
 .apclient-message-wrapper.left {
     animation: slideInLeft 0.25s ease-out forwards;
-    /* Using a custom rgb value instead of just blue because we want to match the hexagons which have been color multiplied, not the spaces between them that are full brightness */
-    background-image: linear-gradient(to right, rgb(0, 0, 217), lightgray, lightgray);
+    background-image: linear-gradient(to right, #58E2FB, lightgray, lightgray);
     margin-right: 3px;
 }
 
 .apclient-message-wrapper.right {
     animation: slideInRight 0.25s ease-out forwards;
-    /* Using a custom rgb value instead of just blue because we want to match the hexagons which have been color multiplied, not the spaces between them that are full brightness */
-    background-image: linear-gradient(to left, rgb(217, 0, 0), lightgray, lightgray);
+    background-image: linear-gradient(to left, #A124C7, lightgray, lightgray);
     margin-left: 3px;
 }
 
@@ -305,7 +321,6 @@ body {
     flex-direction: column;
     height: 100%;
     width: 100%;
-    box-shadow: 3px 3px 5px inset;
 }
 
 #client-area {
@@ -313,30 +328,40 @@ body {
     display: inline-block;
     width: 70%;
     height: 100%;
-    background-color: rgba(169, 169, 169, 255);
+    background-color: rgba(64, 64, 64, 64);
+    /* Temporary, the background image alignment fucked up the template and I gotta fix it */
+    margin-left: -8px;
+    margin-top: -4px;
 }
 
 #left-team-banner {
     display: inline-block;
     width: 15%;
     height: 100%;
-    background-color: blue;
+    background-color: transparent;
 }
 
 #right-team-banner {
     display: inline-block;
     width: 15%;
     height: 100%;
-    background-color: red;
+    background-color: transparent;
 }
 
 .slot-info {
-    background: gray;
     border: 1px solid black;
     box-shadow: 2px 2px 3px;
     padding: 5px;
     margin: 5px;
     text-align: center;
+}
+
+.slot-info.left {
+    background: #58E2FB;
+}
+
+.slot-info.right {
+    background: #A124C7;
 }
 
 .progress-bar {
@@ -366,6 +391,8 @@ body {
     padding: 2px;
 }
 
+
+/*
 .hex-bg {
     background-image: url("../resources/images/HexagonsFill_Niki.png");
     background-repeat: repeat;
@@ -381,6 +408,7 @@ body {
         background-position: -821px -706px;
     }
 }
+*/
 
 .slot-name {
     margin: 0px;
@@ -399,9 +427,9 @@ body {
 }
 
 .team-header.left {
-    text-shadow: 5px 5px 5px blue;
+    text-shadow: 5px 5px 5px #58E2FB;
 }
 
 .team-header.right {
-    text-shadow: 5px 5px 5px red;
+    text-shadow: 5px 5px 5px #A124C7;
 }

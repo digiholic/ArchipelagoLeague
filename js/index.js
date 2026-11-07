@@ -32,7 +32,7 @@ const populatePlayers = function(client, side) {
     for (var n in client.players.slots) {
         var slot = client.players.slots[n];
         var slotElement = $("<div>", {
-            class: "slot-info"
+            class: "slot-info " + side
         });
         $("<p>").addClass("slot-name").append(slot.name).appendTo(slotElement);
         $("<p>").addClass("slot-game").append(slot.game).appendTo(slotElement);
@@ -96,8 +96,10 @@ const teamClientMessage = function(teamClass) {
                         class: "item-" + classification
                     }).appendTo(messageElement);
                     itemNode.append(node.toString());
-                    checkCounts[teamClass][node.part.player]["done"] = checkCounts[teamClass][node.part.player]["done"] + 1;
-                    syncProgression(teamClass, node.part.player);
+                    if (checkCounts != null) {
+                        checkCounts[teamClass][node.part.player]["done"] = checkCounts[teamClass][node.part.player]["done"] + 1;
+                        syncProgression(teamClass, node.part.player);
+                    }
                     break;
                 case "location":
                     var locationNode = $('<span>', {
@@ -286,7 +288,8 @@ const updateTugOfWarStatus = function() {
 
     if (overall != 0) {
         leftPercent = (leftTotal / overall) * 100;
-        rightPercent = (rightTotal / overall) * 100;
+        rightPercent = 100 - leftPercent;
+        //rightPercent = (rightTotal / overall) * 100;
     }
 
     $("#advantage-left").width(leftPercent + "%");
@@ -306,6 +309,8 @@ const init = function() {
     var nameA = urlParams.get("nameA");
     var serverA = urlParams.get("serverA");
     var slotA = urlParams.get("slotA");
+
+    $("#team-left-header").text(nameA);
 
     $("#left-server-address").val(serverA);
     $("#left-server-slot").val(slotA);
@@ -329,6 +334,8 @@ const init = function() {
     var nameB = urlParams.get("nameB");
     var serverB = urlParams.get("serverB");
     var slotB = urlParams.get("slotB");
+
+    $("#team-right-header").text(nameB);
 
     $("#right-server-address").val(serverB);
     $("#right-server-slot").val(slotB);
