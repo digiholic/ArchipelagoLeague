@@ -226,19 +226,11 @@ const getQueryStr = function() {
         passwdA: $("#left-server-passwd").val(),
         trackerA: $("#left-tracker-url").val(),
 
-        stream1A: $("#left-player-1-stream").val(),
-        stream2A: $("#left-player-2-stream").val(),
-        stream3A: $("#left-player-3-stream").val(),
-
         nameB: $("#right-team-name").val(),
         serverB: $("#right-server-address").val(),
         slotB: $("#right-server-slot").val(),
         passwdB: $("#right-server-passwd").val(),
         trackerB: $("#right-tracker-url").val(),
-
-        stream1B: $("#right-player-1-stream").val(),
-        stream2B: $("#right-player-2-stream").val(),
-        stream3B: $("#right-player-3-stream").val(),
     };
 
     return new URLSearchParams(data).toString();
@@ -298,13 +290,6 @@ const updateTugOfWarStatus = function() {
     $("#advantage-right-label").text(rightPercent.toFixed(0) + "%");
 }
 
-const getStreamEmbedDOMelement = function(channel) {
-    var frame = $("<iframe>", {
-        src: "https://player.twitch.tv/?autoplay=true&muted=true&channel=" + channel + "&parent=digiholic.github.io",
-    });
-    return frame;
-}
-
 const init = function() {
     var nameA = urlParams.get("nameA");
     var serverA = urlParams.get("serverA");
@@ -323,14 +308,6 @@ const init = function() {
     $("#team-header-left").text(nameA);
     $("#left-tracker-url").val(trackerA);
 
-    var stream1A = urlParams.get("stream1A");
-    var stream2A = urlParams.get("stream2A");
-    var stream3A = urlParams.get("stream3A");
-
-    $("#left-player-1-stream").val(stream1A);
-    $("#left-player-2-stream").val(stream2A);
-    $("#left-player-3-stream").val(stream3A);
-
     var nameB = urlParams.get("nameB");
     var serverB = urlParams.get("serverB");
     var slotB = urlParams.get("slotB");
@@ -348,14 +325,6 @@ const init = function() {
     $("#team-header-right").text(nameB);
     $("#right-tracker-url").val(trackerB);
 
-    var stream1B = urlParams.get("stream1B");
-    var stream2B = urlParams.get("stream2B");
-    var stream3B = urlParams.get("stream3B");
-
-    $("#right-player-1-stream").val(stream1B);
-    $("#right-player-2-stream").val(stream2B);
-    $("#right-player-3-stream").val(stream3B);
-
     $("#autoconnect")[0].checked = urlParams.get("autoconnect") == "true";
 
     if (urlParams.get("autoconnect") == "true") {
@@ -367,19 +336,6 @@ const init = function() {
 
         $("footer").hide();
     }
-
-    if (stream1A != null && stream1A != "")
-        enqueueFunction(() => $("#left-stream-1").append(getStreamEmbedDOMelement(stream1A)));
-    if (stream2A != null && stream2A != "")
-        enqueueFunction(() => $("#left-stream-2").append(getStreamEmbedDOMelement(stream2A)));
-    if (stream3A != null && stream3A != "")
-        enqueueFunction(() => $("#left-stream-3").append(getStreamEmbedDOMelement(stream3A)));
-    if (stream3B != null && stream3B != "")
-        enqueueFunction(() => $("#right-stream-1").append(getStreamEmbedDOMelement(stream1B)));
-    if (stream2B != null && stream2B != "")
-        enqueueFunction(() => $("#right-stream-2").append(getStreamEmbedDOMelement(stream2B)));
-    if (stream3B != null && stream3B != "")
-        enqueueFunction(() => $("#right-stream-3").append(getStreamEmbedDOMelement(stream3B)));
 }
 
 init();
