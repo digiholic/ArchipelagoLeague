@@ -120,99 +120,93 @@ const recents = [
     "Minecraft (Fabric)",
     "Paper Mario 64",
     "Ship of Harkinian"
-];
+]
 
 const updated_weights = function(games, tags, current_chosen) {
-        var weights = [];
-        /*
-        games.forEach(game => {
-            if (current_chosen.includes(game))
-                weights.push(0);
-            else
-                weights.push(0.75 ** chosen_contains_tags(tags, game, current_chosen));
+    var weights = [];
+    games.forEach(game => {
+        if (current_chosen.includes(game))
+            weights.push(0);
+        else if (recents.includes(game))
+            weights.push(0.80);
+        else
+            weights.push(1);
+        return weights
+    });
+    return weights
+}
+
+
+const chosen_contains_tags = function(tags, candidate, current_chosen) {
+    var val = 0;
+    tags[candidate].forEach(tag => {
+        current_chosen.forEach(chosen => {
+            if (tags[chosen].includes(tag))
+                val += 1;
         });
-        */
-        games.forEach(game => {
-            if (current_chosen.includes(game))
-                weights.push(0);
-            else if (recents.includes(game))
-                weights.push(0.80);
-            else
-                weights.push(1);
-            return weights
-        });
+    });
+
+    return val
+}
 
 
-        const chosen_contains_tags = function(tags, candidate, current_chosen) {
-            var val = 0;
-            tags[candidate].forEach(tag => {
-                current_chosen.forEach(chosen => {
-                    if (tags[chosen].includes(tag))
-                        val += 1;
-                });
-            });
+const roll_three_games = function(games, tags) {
+    var random_game = games[Math.floor(Math.random() * games.length)];
+    //overall_chosen[random_game] += 1
+    var games_chosen = [random_game];
 
-            return val
-        }
+    var weights = updated_weights(games, tags, games_chosen);
+    random_game = weighted_random(games, weights);
+    //overall_chosen[random_game] += 1
+    games_chosen.push(random_game);
 
+    weights = updated_weights(games, tags, games_chosen);
+    random_game = weighted_random(games, weights);
+    //overall_chosen[random_game] += 1
+    games_chosen.push(random_game);
 
-        const roll_three_games = function(games, tags) {
-            var random_game = games[Math.floor(Math.random() * games.length)];
-            //overall_chosen[random_game] += 1
-            var games_chosen = [random_game];
+    return games_chosen;
+}
 
-            var weights = updated_weights(games, tags, games_chosen);
-            random_game = weighted_random(games, weights);
-            //overall_chosen[random_game] += 1
-            games_chosen.push(random_game);
+function weighted_random(items, weights) {
+    var i;
 
-            weights = updated_weights(games, tags, games_chosen);
-            random_game = weighted_random(games, weights);
-            //overall_chosen[random_game] += 1
-            games_chosen.push(random_game);
+    for (i = 1; i < weights.length; i++)
+        weights[i] += weights[i - 1];
 
-            return games_chosen;
-        }
+    var random = Math.random() * weights[weights.length - 1];
 
-        function weighted_random(items, weights) {
-            var i;
+    for (i = 0; i < weights.length; i++)
+        if (weights[i] > random)
+            break;
 
-            for (i = 1; i < weights.length; i++)
-                weights[i] += weights[i - 1];
+    return items[i];
+}
 
-            var random = Math.random() * weights[weights.length - 1];
+var goods = 0;
+var totals = 0;
 
-            for (i = 0; i < weights.length; i++)
-                if (weights[i] > random)
-                    break;
+$("#roll").on("click", function() {
+    var list_type = $('input[name="list-type"]:checked').val();
+    var rolled = [];
+    if (list_type == "short") {
+        rolled = roll_three_games(games_list, tags_list);
+    } else {
+        rolled = roll_three_games(games_list_extended, tags_list_extended);
+    }
+    $("#game-1").text(rolled[0]);
+    $("#game-2").text(rolled[1]);
+    $("#game-3").text(rolled[2]);
+    totals += 1;
 
-            return items[i];
-        }
+    $("#good-count").text("You've hit " + goods + " 'Goods' out of " + totals);
+    $("#good-button").show();
 
-        var goods = 0;
-        var totals = 0;
+    $("#roll").text("Again!");
+});
 
-        $("#roll").on("click", function() {
-            var list_type = $('input[name="list-type"]:checked').val();
-            var rolled = [];
-            if (list_type == "short") {
-                rolled = roll_three_games(games_list, tags_list);
-            } else {
-                rolled = roll_three_games(games_list_extended, tags_list_extended);
-            }
-            $("#game-1").text(rolled[0]);
-            $("#game-2").text(rolled[1]);
-            $("#game-3").text(rolled[2]);
-            totals += 1;
-
-            $("#good-count").text("You've hit " + goods + " 'Goods' out of " + totals);
-            $("#good-button").show();
-
-            $("#roll").text("Again!");
-        });
-
-        $("#good-button").on("click", function() {
-            goods += 1;
-            $("#good-count").text("You've hit " + goods + " 'Goods' out of " + totals);
-            $("#good-button").hide();
-        });
+$("#good-button").on("click", function() {
+    goods += 1;
+    $("#good-count").text("You've hit " + goods + " 'Goods' out of " + totals);
+    $("#good-button").hide();
+});
